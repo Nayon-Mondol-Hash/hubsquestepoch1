@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07130f">
+  <title>Sylva — Recursive Soundscapes</title>
+  <link rel="stylesheet" href="Sylva.css">
+</head>
+<body>
+  <main class="app">
+    <canvas id="canopy" aria-label="Animated recursive fractal soundscape"></canvas>
+    <div class="sky-wash" aria-hidden="true"></div>
+    <header class="brand">
+      <a class="brand-mark" href="#" aria-label="Sylva home"><span>✳</span></a>
+      <div><div class="brand-name">sylva<span class="brand-dot">.</span></div><div class="brand-subtitle">RECURSIVE SOUNDSCAPES</div></div>
+      <button class="tour-button glass" id="tourButton" type="button">▶ Guided Tour</button>
+    </header>
+    <section class="inspector glass" aria-label="Live recursion inspector">
+      <div class="inspector-top"><span class="live-dot"></span><span id="statusText">READY TO GROW</span><span class="inspector-divider"></span><span>LIVE RECURSION</span><span class="cap-badge" id="capBadge" hidden>Capped at 2,048 nodes for smooth audio</span></div>
+      <div class="inspector-stats">
+        <div><span class="stat-label">CALL DEPTH</span><strong id="depthValue">—</strong></div>
+        <div><span class="stat-label">LAST NOTE</span><strong id="noteValue">listen</strong></div>
+        <div><span class="stat-label">CALLS / TOTAL</span><strong id="callsValue">0 / 0</strong></div>
+      </div>
+    </section>
+    <section class="control-panel glass" id="controlPanel" aria-label="Soundscape controls">
+      <div class="panel-heading">
+        <div><span class="eyebrow">YOUR LITTLE UNIVERSE</span><h1>Shape the sound</h1></div>
+        <button class="icon-button collapse-button" id="collapseButton" title="Collapse controls" aria-label="Collapse controls">−</button>
+      </div>
+      <div class="panel-content">
+        <div class="section-label"><span>01</span> RECURSIVE GEOMETRY</div>
+        <div class="mode-switch" role="group" aria-label="Recursive geometry">
+          <button class="mode-button selected" data-mode="tree" type="button" title="Recursive wind-swaying blossom canopy"><span>♧</span> Blossom tree</button>
+          <button class="mode-button" data-mode="sierpinski" type="button" title="Recursive Sierpinski triangle constellation"><span>✳</span> Sierpinski stars</button>
+          <button class="mode-button" data-mode="koch" type="button" title="Recursive Koch snowflake crystal"><span>❄</span> Koch snowflake</button>
+          <button class="mode-button" data-mode="spiral" type="button" title="Recursive golden-angle phyllotaxis spiral"><span>◎</span> Spiral phyllotaxis</button>
+          <button class="mode-button" data-mode="fern" type="button" title="Asymmetric recursive botanical fern"><span>♧</span> Recursive fern</button>
+        </div>
+        <div class="seed-control">
+          <label for="seedInput">Soundscape seed</label>
+          <div class="seed-controls">
+            <input id="seedInput" type="text" value="SYLVA-4829" maxlength="32" autocomplete="off" spellcheck="false" aria-label="Soundscape seed">
+            <button class="seed-button" id="randomSeedButton" type="button" title="Generate a new soundscape seed" aria-label="Randomize soundscape seed">↻</button>
+            <button class="seed-button copy-seed-button" id="copySeedButton" type="button" title="Copy a link to this soundscape">Copy link</button>
+          </div>
+          <small>Reuse a seed to hear the same soundscape.</small>
+        </div>
+        <label class="range-row"><span>Recursion depth <output id="depthOut">6</output></span><input id="depthSlider" type="range" min="3" max="9" value="6" title="Depth sets how many recursive levels grow and how high the branch notes rise."></label>
+        <label class="range-row"><span>Branching factor <output id="factorOut">3</output></span><input id="factorSlider" type="range" min="2" max="4" value="3" title="Branching sets how many child limbs each call creates, shaping canopy fullness and note density."></label>
+        <label class="range-row"><span>Branch spread <output id="angleOut">32&#176;</output></span><input id="angleSlider" type="range" min="15" max="65" value="32" title="Spread changes the angle between limbs and subtly changes notes through each branch angle."></label>
+        <div class="section-label section-spaced"><span>02</span> PRESET MOODS <span class="custom-badge" id="customBadge" hidden>Custom (Modified)</span></div>
+        <div class="preset-grid">
+          <button class="preset selected" data-preset="rain" type="button" title="Rain-lit Lydian hush"><span class="preset-orb rain-orb"></span><span class="preset-copy"><span>Midnight rain</span><small>Rain-lit Lydian hush</small></span></button>
+          <button class="preset" data-preset="blossom" type="button" title="Petals in gentle bloom"><span class="preset-orb blossom-orb"></span><span class="preset-copy"><span>Zen cherry blossom</span><small>Petals in gentle bloom</small></span></button>
+          <button class="preset" data-preset="cosmic" type="button" title="A wide Lydian drift"><span class="preset-orb cosmic-orb"></span><span class="preset-copy"><span>Cosmic nebula</span><small>A wide Lydian drift</small></span></button>
+          <button class="preset" data-preset="glacier" type="button" title="Icy crystal geometry with cathedral reverb"><span class="preset-orb glacier-orb"></span><span class="preset-copy"><span>Glacier cathedral</span><small>Ice-lit crystal bells</small></span></button>
+          <button class="preset" data-preset="nautilus" type="button" title="Golden-angle spiral with warm plucked tones"><span class="preset-orb nautilus-orb"></span><span class="preset-copy"><span>Golden nautilus</span><small>Amber Fibonacci bloom</small></span></button>
+          <button class="preset" data-preset="deep" type="button" title="Abyssal fern with a deep, warm pad"><span class="preset-orb deep-orb"></span><span class="preset-copy"><span>Bioluminescent deep</span><small>Teal fronds in the dark</small></span></button>
+          <button class="preset" data-preset="solar" type="button" title="Radiant Sierpinski rhythm with crisp plucks"><span class="preset-orb solar-orb"></span><span class="preset-copy"><span>Solar flare polyrhythm</span><small>Coral recursive pulse</small></span></button>
+        </div>
+        <label class="select-row"><span>Musical scale</span><select id="scaleSelect"><option value="pentatonic">C Major Pentatonic</option><option value="lydian" selected>D Lydian</option></select></label>
+        <div class="harmonic-display" id="harmonicDisplay" aria-live="polite">Harmonic engine · D Lydian</div>
+        <div class="section-label section-spaced"><span>03</span> THE LISTENING</div>
+        <label class="range-row tempo-row"><span>Growth tempo <output id="tempoOut">82 BPM</output></span><input id="tempoSlider" type="range" min="40" max="160" value="82" title="Tempo sets the interval between recursive calls, changing the pulse of the composition."></label>
+        <label class="select-row timing-select"><span>Recursive timing</span><select id="timingSelect" title="Uniform keeps a steady beat; Fibonacci / Golden Ratio gradually quickens deeper calls."><option value="uniform">Uniform</option><option value="fibonacci">Fibonacci / Golden Ratio</option></select></label>
+        <div class="shortcut-note">SPACE play · R restart · Z zen · I inspector<br>CLICK pluck · SHIFT/right-click mute subtree</div>
+        <div class="transport">
+          <button class="play-button" id="playButton"><span class="play-icon">▶</span><span id="playLabel">Begin growing</span></button>
+          <button class="icon-button restart-button" id="restartButton" title="Restart recursion" aria-label="Restart recursion">↻</button>
+        </div>
+        <label class="toggle-row"><span><strong>Infinite loop</strong><small>Let the canopy begin again</small></span><input id="loopToggle" type="checkbox" checked><span class="toggle-ui"></span></label>
+        <label class="toggle-row"><span><strong>Ambient pad</strong><small>A warm chord beneath the branches</small></span><input id="padToggle" type="checkbox" checked><span class="toggle-ui"></span></label>
+        <label class="toggle-row"><span><strong>Auto-Breathe</strong><small>Slowly evolve spread and pad tone</small></span><input id="breatheToggle" type="checkbox"><span class="toggle-ui"></span></label>
+        <label class="range-row volume-row"><span>Master volume <output id="masterOut">42%</output></span><input id="masterSlider" type="range" min="0" max="100" value="42"></label>
+        <label class="range-row volume-row"><span>Pad volume <output id="padOut">24%</output></span><input id="padSlider" type="range" min="0" max="100" value="24"></label>
+        <label class="select-row export-duration"><span>Composition length</span><select id="durationSelect" aria-label="WAV composition duration"><option value="15">15 seconds</option><option value="30" selected>30 seconds</option><option value="60">60 seconds</option></select></label>
+        <button class="export-button" id="exportButton"><span>↓</span><span id="exportLabel">Export composition <small>.WAV</small></span></button>
+        <div class="export-progress" id="exportProgress" hidden aria-live="polite"><div class="progress-track"><span id="progressBar"></span></div><span id="progressText">Preparing your soundscape…</span></div>
+        <p class="panel-footnote"><span>✧</span> A small forest, grown one note at a time.</p>
+      </div>
+    </section>
+    <button class="reopen-button glass" id="reopenButton" aria-label="Open controls" hidden>☷ <span>Controls</span></button>
+    <button class="zen-button glass" id="zenButton" aria-label="Enter Zen mode" title="Enter Zen mode"><span aria-hidden="true">✧</span><span id="zenLabel">Zen</span></button>
+    <button class="trace-toggle glass" id="traceToggle" aria-expanded="false" aria-controls="traceDrawer">⌘ <span>Algorithm trace</span></button>
+    <aside class="trace-drawer glass" id="traceDrawer" aria-label="Algorithm inspector" hidden>
+      <div class="trace-heading"><div><span class="eyebrow">RECURSION, MADE VISIBLE</span><h2>Algorithm inspector</h2></div><button class="icon-button" id="traceClose" aria-label="Close algorithm inspector">×</button></div>
+      <section class="trace-section"><div class="trace-section-title">LIVE CALL STACK</div><ol class="trace-stack" id="traceStack"><li class="trace-empty">Start growing to follow the call stack.</li></ol></section>
+      <section class="trace-section trace-history-section"><div class="trace-section-title">RECENT CALLS</div><ol class="trace-list" id="traceList" aria-live="polite"><li class="trace-empty">Each recursive note will appear here.</li></ol></section>
+    </aside>
+    <footer class="footer-note"><span class="footer-line"></span><span>GROW SLOWLY&nbsp; · &nbsp;LISTEN CLOSELY</span><span class="footer-line"></span></footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <aside class="tour-caption glass" id="tourCaption" aria-live="polite" hidden><span id="tourCaptionText"></span><button class="tour-exit" id="tourExit" type="button">Exit Tour</button></aside>
+    <section class="welcome-overlay" id="welcomeOverlay" aria-labelledby="welcomeTitle">
+      <div class="welcome-card glass">
+        <div class="welcome-symbol" aria-hidden="true">✳</div>
+        <span class="eyebrow">A MOMENT TO ARRIVE</span>
+        <h2 id="welcomeTitle">Let the forest<br>find its rhythm.</h2>
+        <p id="welcomeDescription">Each branch becomes a note.<br>Change the depth and spread to shape how the canopy grows—and how it sounds.</p>
+        <button class="play-button welcome-button" id="welcomeStart" autofocus><span class="play-icon">▶</span>Begin soundscape</button>
+        <span class="welcome-footnote">BEST EXPERIENCED WITH HEADPHONES</span>
+      </div>
+    </section>
+  </main>
+  <script src="Sylva.js"></script>
+</body>
+</html>
